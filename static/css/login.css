@@ -32,7 +32,7 @@
 
 .login-card {
   width: min(920px, 100%);
-  min-height: 560px;
+  min-height: 540px;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.2rem;
@@ -42,7 +42,7 @@
 
 .login-bienvenida,
 .login-panel {
-  border-radius: 28px;
+  border-radius: 24px;
   overflow: hidden;
   box-shadow: 0 24px 55px rgba(0, 0, 0, .25);
 }
@@ -132,7 +132,7 @@
 /* Panel del formulario */
 .login-panel {
   background: #fff;
-  padding: 3rem clamp(2rem, 5vw, 3.5rem);
+  padding: 2.7rem clamp(1.6rem, 5vw, 3.3rem);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -173,10 +173,12 @@
   display: flex;
   align-items: center;
   gap: .8rem;
-  border-bottom: 1.5px solid #b7b7b7;
-  padding: .7rem .2rem;
-  margin-bottom: 1.35rem;
-  transition: border-color .2s ease, transform .2s ease;
+  border: 1.5px solid #e2cdda;
+  border-radius: 15px;
+  padding: .78rem .85rem;
+  margin-bottom: 1rem;
+  background: #fff;
+  transition: border-color .2s ease, transform .2s ease, box-shadow .2s ease;
 }
 .campo input {
   flex: 1;
@@ -190,21 +192,24 @@
 }
 .campo input::placeholder { color: #a3a3a3; }
 .campo:focus-within {
-  border-bottom-color: var(--rosa);
+  border-color: var(--rosa);
+  box-shadow: 0 0 0 4px rgba(192, 83, 138, .12);
+  transform: translateY(-1px);
 }
 
 .ver-clave {
   border: 0;
-  background: none;
-  color: var(--rosa);
+  background: #f8e8f1;
+  color: var(--vino-oscuro);
+  border-radius: 999px;
   font: inherit;
   font-size: .78rem;
   font-weight: 600;
   cursor: pointer;
-  padding: .3rem .15rem;
-  transition: transform .1s ease, opacity .15s ease;
+  padding: .35rem .65rem;
+  transition: transform .1s ease, opacity .15s ease, background .15s ease;
 }
-.ver-clave:hover { opacity: .8; }
+.ver-clave:hover { background: var(--rosa-claro); }
 .ver-clave:active { transform: scale(.92); }
 
 .login-acciones {
@@ -240,11 +245,12 @@
 .login-error {
   background: #fde8f1;
   color: #a01650;
-  border-radius: 10px;
-  padding: .65rem .9rem;
+  border-radius: 12px;
+  padding: .75rem .9rem;
   font-size: .82rem;
   margin: 0 0 1rem;
   border-left: 4px solid var(--rosa);
+  box-shadow: 0 8px 18px rgba(160, 22, 80, .08);
 }
 
 @media (max-width: 760px) {

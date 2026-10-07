@@ -10,25 +10,103 @@
 </header>
 
 <main class="menu">
-  <h1>Menú principal</h1>
+  <section class="menu-hero">
+    <div>
+      <span class="eyebrow">Sistema de evaluaciones</span>
+      <h1>{% if user.es_admin %}Panel administrador{% else %}Menú principal{% endif %}</h1>
+      <p>Gestiona la información y revisa tus evaluaciones desde un espacio más claro y organizado.</p>
+    </div>
+  </section>
   {% if messages %}
     <ul class="mensajes">{% for m in messages %}<li class="mensaje {{ m.tags }}">{{ m.message }}</li>{% endfor %}</ul>
   {% endif %}
 
   {% if user.es_admin %}
-    <div class="menu-grid">
-      <a class="menu-item" href="{% url 'cuestionario_lista' %}">Gestionar cuestionarios</a>
-      <a class="menu-item" href="{% url 'usuario_lista' %}">Gestionar usuarios</a>
-      <a class="menu-item" href="{% url 'periodo_lista' %}">Gestionar periodos</a>
-      <a class="menu-item" href="{% url 'evaluacion_lista' %}">Configurar evaluaciones</a>
-    </div>
+    <section class="admin-layout">
+      <div class="admin-actions">
+        <div class="section-heading">
+          <span class="eyebrow">Acciones</span>
+          <h2>Gestión del sistema</h2>
+        </div>
+        <div class="stats-grid" aria-label="Resumen estadístico">
+          <article class="stat-card"><span>👥</span><small>Usuarios</small><strong>{{ total_usuarios }}</strong></article>
+          <article class="stat-card"><span>📝</span><small>Cuestionarios</small><strong>{{ total_cuestionarios }}</strong></article>
+          <article class="stat-card"><span>📋</span><small>Evaluaciones</small><strong>{{ total_evaluaciones }}</strong></article>
+          <article class="stat-card"><span>📅</span><small>Periodos</small><strong>{{ total_periodos }}</strong></article>
+        </div>
+        <div class="action-grid">
+          <a class="action-card pressable" href="{% url 'usuario_lista' %}"><span class="action-icon">👥</span><strong>Usuarios</strong><small>Gestionar usuarios y roles</small></a>
+          <a class="action-card pressable" href="{% url 'cuestionario_lista' %}"><span class="action-icon">📝</span><strong>Cuestionarios</strong><small>Crear secciones, preguntas y opciones</small></a>
+          <a class="action-card pressable" href="{% url 'evaluacion_lista' %}"><span class="action-icon">📋</span><strong>Evaluaciones</strong><small>Asignar y revisar evaluaciones</small></a>
+          <a class="action-card pressable" href="{% url 'periodo_lista' %}"><span class="action-icon">📅</span><strong>Periodos</strong><small>Administrar rangos activos</small></a>
+        </div>
+      </div>
+
+      <aside class="admin-evaluaciones">
+        <div class="section-heading">
+          <span class="eyebrow">Evaluaciones</span>
+          <h2>Creadas</h2>
+        </div>
+        <div class="scroll-list">
+          {% for e in evaluaciones_creadas %}
+            <article class="eval-card compact">
+              <div>
+                <strong>{{ e.evaluador }} → {{ e.evaluado }}</strong>
+                <small>{{ e.cuestionario }} · {{ e.periodo }}</small>
+                <small>{{ e.cargo_evaluado }}</small>
+              </div>
+              <span class="estado-pill estado-{{ e.estado|lower }}">{{ e.get_estado_display }}</span>
+            </article>
+          {% empty %}
+            <p class="empty-card">Aún no hay evaluaciones configuradas.</p>
+          {% endfor %}
+        </div>
+      </aside>
+    </section>
   {% endif %}
 
-  <h2>Mis evaluaciones pendientes</h2>
-  {% for e in evaluaciones %}
-    <a class="menu-item" href="{% url 'evaluacion_responder' e.pk %}">{{ e.evaluado }} · {{ e.cargo_evaluado }} <small>{{ e.cuestionario }} · {{ e.periodo }}</small></a>
-  {% empty %}
-    <p>No tienes evaluaciones pendientes en el periodo activo.</p>
-  {% endfor %}
+  <section class="evaluaciones-layout">
+    <div class="eval-column">
+      <div class="section-heading">
+        <span class="eyebrow">Evaluaciones</span>
+        <h2>Pendientes</h2>
+      </div>
+      {% for e in evaluaciones %}
+        <article class="eval-card pending">
+          <div class="eval-card-top">
+            <span class="estado-pill estado-pendiente">Pendiente</span>
+            <small>{{ e.periodo }}</small>
+          </div>
+          <h3>{{ e.evaluado }}</h3>
+          <p>{{ e.cargo_evaluado }}</p>
+          <small>{{ e.cuestionario }}</small>
+          <a class="btn-card pressable" href="{% url 'evaluacion_responder' e.pk %}">Realizar evaluación</a>
+        </article>
+      {% empty %}
+        <p class="empty-card">No tienes evaluaciones pendientes en el periodo activo.</p>
+      {% endfor %}
+    </div>
+
+    <div class="eval-column">
+      <div class="section-heading">
+        <span class="eyebrow">Evaluaciones</span>
+        <h2>Completadas</h2>
+      </div>
+      {% for e in evaluaciones_completadas %}
+        <article class="eval-card completed">
+          <div class="eval-card-top">
+            <span class="estado-pill estado-terminada">Completada</span>
+            <small>{{ e.periodo }}</small>
+          </div>
+          <h3>{{ e.evaluado }}</h3>
+          <p>{{ e.cargo_evaluado }}</p>
+          <small>{{ e.cuestionario }}</small>
+          {% if e.fecha_hora_final %}<small>Finalizada: {{ e.fecha_hora_final|date:"d/m/Y H:i" }}</small>{% endif %}
+        </article>
+      {% empty %}
+        <p class="empty-card">Aún no tienes evaluaciones completadas.</p>
+      {% endfor %}
+    </div>
+  </section>
 </main>
 {% endblock %}

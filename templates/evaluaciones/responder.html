@@ -8,8 +8,15 @@
   </div>
 </div>
 
-<form method="post" novalidate>
+<form method="post" novalidate class="questionnaire js-questionnaire">
   {% csrf_token %}
+  <div class="progress-card" aria-live="polite">
+    <div>
+      <strong>Pregunta <span data-progress-current>1</span> de <span data-progress-total>1</span></strong>
+      <small><span data-progress-percent>0%</span> completado</small>
+    </div>
+    <div class="progress-track"><span data-progress-fill></span></div>
+  </div>
   {% for s in secciones %}
     <section class="tarjeta">
       <header class="tarjeta-cab"><div><h2>{{ s.obj.nombre }}</h2>{% if s.obj.descripcion %}<small>{{ s.obj.descripcion }}</small>{% endif %}</div></header>
@@ -33,9 +40,11 @@
   {% empty %}
     <p class="vacio">Este cuestionario todavía no tiene preguntas.</p>
   {% endfor %}
-  <div class="acciones">
-    <a class="btn btn-claro" href="{% url 'inicio' %}">Salir sin enviar</a>
-    <button class="btn" type="submit">Enviar evaluación</button>
+  <div class="acciones sticky-actions">
+    <a class="btn btn-claro" href="{% url 'inicio' %}" data-question-exit>Salir sin enviar</a>
+    <button class="btn btn-claro" type="button" data-question-prev hidden>Anterior</button>
+    <button class="btn" type="button" data-question-next>Siguiente</button>
+    <button class="btn" type="submit" data-question-finish hidden>Finalizar</button>
   </div>
 </form>
 {% endblock %}

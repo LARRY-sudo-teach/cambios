@@ -3,9 +3,39 @@
   --vino-oscuro: #8a2a62;
   --rosa: #c0538a;
   --rosa-claro: #e3b3cf;
+  --acento: #2f9c95;
+  --acento-claro: #dff4f2;
+  --fondo: #faf3f7;
+  --borde: #efd9e5;
+  --sombra: 0 18px 42px rgba(107, 20, 66, .12);
+  --sombra-suave: 0 10px 24px rgba(107, 20, 66, .09);
   --texto: #2b2b2b;
 }
 * { box-sizing: border-box; }
 body { margin: 0; font-family: "Poppins", sans-serif; color: var(--texto); }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 :focus-visible { outline: 3px solid var(--rosa); outline-offset: 2px; }
+
+a, button, input, select, textarea { -webkit-tap-highlight-color: transparent; }
+
+.ui-card {
+  background: #fff;
+  border: 1px solid rgba(227, 179, 207, .55);
+  border-radius: 14px;
+  box-shadow: var(--sombra-suave);
+}
+
+.pressable {
+  transition: transform .14s ease, box-shadow .18s ease, background .18s ease, border-color .18s ease, color .18s ease;
+}
+.pressable:hover { transform: translateY(-2px); box-shadow: var(--sombra); }
+.pressable:active { transform: translateY(1px) scale(.985); box-shadow: 0 5px 14px rgba(107, 20, 66, .14); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: .001ms !important;
+  }
+}
